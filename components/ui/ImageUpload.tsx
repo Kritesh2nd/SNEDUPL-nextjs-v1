@@ -4,7 +4,7 @@ import { Upload, X, Image as ImageIcon } from "lucide-react";
 
 interface ImageUploadProps {
   label?: string;
-  value: string;           // current URL or base64
+  value: string; // current URL or base64
   onChange: (dataUrl: string) => void;
   onClear?: () => void;
   className?: string;
@@ -29,8 +29,14 @@ export default function ImageUpload({
 
   const processFile = (file: File) => {
     setError("");
-    if (!file.type.startsWith("image/")) { setError("Please select an image file"); return; }
-    if (file.size > 5 * 1024 * 1024) { setError("Image must be under 5 MB"); return; }
+    if (!file.type.startsWith("image/")) {
+      setError("Please select an image file");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Image must be under 5 MB");
+      return;
+    }
     const reader = new FileReader();
     reader.onload = (e) => {
       const result = e.target?.result as string;
@@ -46,24 +52,34 @@ export default function ImageUpload({
   };
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault(); setDragging(false);
+    e.preventDefault();
+    setDragging(false);
     const file = e.dataTransfer.files?.[0];
     if (file) processFile(file);
   };
 
-  const handleClear = () => { onClear?.(); onChange(""); setError(""); };
+  const handleClear = () => {
+    onClear?.();
+    onChange("");
+    setError("");
+  };
 
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
       {label && (
-        <span className="text-[11px] font-semibold tracking-[0.18em] uppercase" style={{ color: "var(--g300)" }}>
+        <span
+          className="text-[11px] font-semibold tracking-[0.18em] uppercase"
+          style={{ color: "var(--g300)" }}
+        >
           {label}
         </span>
       )}
 
       {value ? (
         /* Preview */
-        <div className={`relative ${previewSizes[previewSize]} ${circular ? "aspect-square" : "w-full"} group`}>
+        <div
+          className={`relative ${previewSizes[previewSize]} ${circular ? "aspect-square" : "w-full"} group`}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={value}
@@ -71,7 +87,9 @@ export default function ImageUpload({
             className={`w-full h-full object-cover ${circular ? "rounded-full" : "rounded-lg"} border border-white/10`}
           />
           {/* Overlay actions */}
-          <div className={`absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 ${circular ? "rounded-full" : "rounded-lg"}`}>
+          <div
+            className={`absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 ${circular ? "rounded-full" : "rounded-lg"}`}
+          >
             <button
               type="button"
               onClick={() => inputRef.current?.click()}
@@ -94,22 +112,29 @@ export default function ImageUpload({
         /* Drop zone */
         <div
           onClick={() => inputRef.current?.click()}
-          onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDragging(true);
+          }}
           onDragLeave={() => setDragging(false)}
           onDrop={handleDrop}
           className={`
             relative flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200
             ${previewSizes[previewSize]} ${circular ? "aspect-square rounded-full" : "w-full rounded-lg"}
             border-2 border-dashed
-            ${dragging
-              ? "border-[var(--g400)] bg-[rgba(34,197,94,0.08)]"
-              : "border-white/15 hover:border-[var(--g500)] hover:bg-[rgba(34,197,94,0.04)]"
+            ${
+              dragging
+                ? "border-[var(--g400)] bg-[rgba(34,197,94,0.08)]"
+                : "border-white/15 hover:border-[var(--g500)] hover:bg-[rgba(34,197,94,0.04)]"
             }
           `}
         >
           <div
             className="w-10 h-10 rounded-full flex items-center justify-center"
-            style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(74,222,128,0.2)" }}
+            style={{
+              background: "rgba(34,197,94,0.1)",
+              border: "1px solid rgba(74,222,128,0.2)",
+            }}
           >
             <ImageIcon size={18} style={{ color: "var(--g400)" }} />
           </div>
@@ -117,7 +142,9 @@ export default function ImageUpload({
             <p className="text-xs text-white/50">
               {dragging ? "Drop to upload" : "Click or drag image here"}
             </p>
-            <p className="text-[10px] text-white/25 mt-0.5">PNG, JPG, WEBP · Max 5 MB</p>
+            <p className="text-[10px] text-white/25 mt-0.5">
+              PNG, JPG, WEBP · Max 5 MB
+            </p>
           </div>
         </div>
       )}
