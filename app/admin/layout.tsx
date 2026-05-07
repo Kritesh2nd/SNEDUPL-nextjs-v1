@@ -4,8 +4,10 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import { Input } from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { Leaf, Shield } from "lucide-react";
+import { AdminLogin } from "@/types";
+import { getAdminData } from "@/lib/utils";
 
-const DUMMY = { username: "admin", password: "admin123" };
+const DUMMY: AdminLogin = getAdminData();
 
 export default function AdminRootLayout({
   children,
@@ -94,7 +96,7 @@ export default function AdminRootLayout({
                 <p className="text-[11px] text-white/40">
                   Demo credentials:{" "}
                   <code className="font-mono" style={{ color: "var(--g400)" }}>
-                    admin / admin123
+                    {DUMMY.username} / {DUMMY.password}
                   </code>
                 </p>
               </div>

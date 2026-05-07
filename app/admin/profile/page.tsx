@@ -4,9 +4,10 @@ import { useSite } from "@/context/SiteContext";
 import { Input } from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { Shield, User, Mail, AtSign } from "lucide-react";
+import { getAdminData } from "@/lib/utils";
+import { AdminLogin } from "@/types";
 
-const DUMMY_PASSWORD = "admin123";
-
+const DUMMY: AdminLogin = getAdminData();
 export default function AdminProfilePage() {
   const { adminProfile } = useSite();
   const [pwForm, setPwForm] = useState({ current: "", next: "", confirm: "" });
@@ -16,7 +17,7 @@ export default function AdminProfilePage() {
 
   const changePassword = async () => {
     const e: Record<string, string> = {};
-    if (pwForm.current !== DUMMY_PASSWORD)
+    if (pwForm.current !== DUMMY.password)
       e.current = "Incorrect current password";
     if (!pwForm.next || pwForm.next.length < 6) e.next = "Minimum 6 characters";
     if (pwForm.next !== pwForm.confirm) e.confirm = "Passwords do not match";
@@ -190,7 +191,7 @@ export default function AdminProfilePage() {
                 color: "var(--g400)",
               }}
             >
-              admin123
+              {DUMMY.username}
             </code>
           </p>
         </div>
