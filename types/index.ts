@@ -96,3 +96,8 @@ export interface AdminLogin {
   username: string;
   password: string;
 }
+
+export interface LoginResponseDto {
+  token: string;
+  user: AdminProfile;
+}

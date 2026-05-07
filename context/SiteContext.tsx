@@ -5,6 +5,7 @@ import React, {
   useState,
   useCallback,
   ReactNode,
+  useEffect,
 } from "react";
 import type {
   SiteContent,
@@ -20,6 +21,7 @@ import {
   DEFAULT_INQUIRIES,
   DEFAULT_ADMIN_PROFILE,
 } from "@/lib/constants";
+import { getLocalStorage, isTokenExpired } from "@/lib/utils";
 
 interface SiteContextValue {
   siteContent: SiteContent;
@@ -39,13 +41,20 @@ interface SiteContextValue {
   deleteInquiry: (i: number) => void;
   adminProfile: AdminProfile;
   updateAdminProfile: (p: AdminProfile) => void;
+  token: string;
+  setToken: (t: string) => void;
   ageVerified: boolean;
   setAgeVerified: (v: boolean) => void;
+
+  hydration: boolean;
+  setHydration: (h: boolean) => void;
 }
 
 const SiteContext = createContext<SiteContextValue | null>(null);
 
 export function SiteProvider({ children }: { children: ReactNode }) {
+  const [token, setToken] = useState<string>("");
+  const [hydration, setHydration] = useState<boolean>(false);
   const [siteContent, setSiteContentState] =
     useState<SiteContent>(DEFAULT_SITE_CONTENT);
   const [inquiries, setInquiries] = useState<Inquiry[]>(DEFAULT_INQUIRIES);
@@ -147,6 +156,14 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     [],
   );
 
+  useEffect(() => {
+    const localToken: string = getLocalStorage("token") ?? "";
+    const tokenExpired = isTokenExpired(localToken);
+    setToken(tokenExpired ? "" : localToken);
+
+    setHydration(true);
+  }, []);
+
   return (
     <SiteContext.Provider
       value={{
@@ -169,6 +186,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
         updateAdminProfile,
         ageVerified,
         setAgeVerified,
+        token,
+        setToken,
+        hydration,
+        setHydration,
       }}
     >
       {children}

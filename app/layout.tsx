@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { SiteProvider } from "@/context/SiteContext";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Shree New Everest Distillery – Nepal's Premium Spirits House",
@@ -24,7 +25,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <SiteProvider>{children}</SiteProvider>
+        <SiteProvider>{children}</SiteProvider> <Toaster />
       </body>
     </html>
   );

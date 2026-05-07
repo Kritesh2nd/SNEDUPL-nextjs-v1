@@ -14,6 +14,7 @@ import {
   Home,
   Edit3,
   Leaf,
+  LogOut,
 } from "lucide-react";
 
 const NAV = [

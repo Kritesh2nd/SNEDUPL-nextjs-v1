@@ -98,7 +98,7 @@ export default function AdminDashboardPage() {
           </p>
         </div>
         <div
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg"
+          className="rounded-2xl overflow-hidden"
           style={{
             background: "rgba(34,197,94,0.06)",
             border: "1px solid rgba(74,222,128,0.12)",
