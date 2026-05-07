@@ -1,13 +1,41 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSite } from "@/context/SiteContext";
 import Button from "@/components/ui/Button";
 import { COMPANY_NAME, COMPANY_SHORT } from "@/lib/constants";
+import { getLocalStorage, setLocalStorage } from "@/lib/utils";
 
 export default function AgeGate() {
   const { ageVerified, setAgeVerified } = useSite();
+
   const [declined, setDeclined] = useState(false);
-  if (ageVerified) return null;
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    const stored = getLocalStorage("age_verified");
+
+    if (stored === "true") {
+      setAgeVerified(true);
+    } else {
+      setAgeVerified(false);
+    }
+
+    setHydrated(true);
+  }, []);
+
+  const handleConfirm = () => {
+    setLocalStorage("age_verified", "true");
+    setAgeVerified(true);
+  };
+
+  const handleReject = () => {
+    setAgeVerified(false);
+    setDeclined(true);
+    alert("You must be 18+ to access this site.");
+  };
+
+  // 🚀 Prevent flash completely
+  if (!hydrated || ageVerified) return null;
 
   return (
     <div
@@ -32,11 +60,12 @@ export default function AgeGate() {
           />
         ))}
       </div>
+
       {/* Dot grid */}
       <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none" />
 
       <div className="relative text-center px-6 max-w-sm mx-auto fade-up">
-        {/* Logo mark */}
+        {/* Logo */}
         <div className="mb-6 flex justify-center">
           <div className="relative">
             <div
@@ -63,16 +92,16 @@ export default function AgeGate() {
           </div>
         </div>
 
-        <p
-          className="text-[10px] tracking-[0.3em] uppercase mb-2"
-          style={{ color: "var(--g400)" }}
-        >
+        <p className="text-[10px] tracking-[0.3em] uppercase mb-2 text-[var(--g400)]">
           Est. 2011
         </p>
+
         <h1 className="font-display text-3xl text-white mb-1">
           {COMPANY_SHORT}
         </h1>
+
         <p className="text-xs text-white/35 mb-6 tracking-wide">Nepal</p>
+
         <div
           className="w-12 h-px mx-auto mb-6"
           style={{
@@ -87,22 +116,25 @@ export default function AgeGate() {
               By entering this website, you confirm you are of legal drinking
               age in your country of residence.
             </p>
+
             <p className="text-white/30 text-[11px] mb-8 tracking-widest uppercase">
               Are you 18 years or older?
             </p>
+
             <div className="flex gap-3 justify-center">
               <Button
                 variant="primary"
                 size="lg"
-                onClick={() => setAgeVerified(true)}
+                onClick={handleConfirm}
                 className="min-w-[130px]"
               >
                 Yes, Enter
               </Button>
+
               <Button
                 variant="outline"
                 size="lg"
-                onClick={() => setDeclined(true)}
+                onClick={handleReject}
                 className="min-w-[130px]"
               >
                 No, Exit
@@ -115,6 +147,7 @@ export default function AgeGate() {
               We&apos;re sorry. This site is only accessible to those of legal
               drinking age.
             </p>
+
             <p className="mt-4 text-white/25 text-xs tracking-wider">
               Please drink responsibly.
             </p>

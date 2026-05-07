@@ -3,11 +3,17 @@
 // ============================================================
 
 export type ProductCategory =
-  | "SOJU" | "WHISKY" | "VODKA"
-  | "HERO_SERIES" | "OTHER_DISTILLED"
-  | "NON_ALCOHOLIC" | "UPCOMING";
+  | "SOJU"
+  | "WHISKY"
+  | "VODKA"
+  | "HERO_SERIES"
+  | "OTHER_DISTILLED"
+  | "NON_ALCOHOLIC"
+  | "UPCOMING";
 
-export interface TasteNote { label: string }
+export interface TasteNote {
+  label: string;
+}
 
 export interface Product {
   name: string;
@@ -17,7 +23,7 @@ export interface Product {
   alcoholPercent: number | null;
   origin: string;
   tasteNotes: TasteNote[];
-  image: string;          // URL or base64 data URL
+  image: string; // URL or base64 data URL
   featured: boolean;
   isUpcoming: boolean;
   variants?: string[];
@@ -33,7 +39,7 @@ export interface LeadershipProfile {
   name: string;
   position: string;
   bio: string;
-  image: string;          // URL or base64 data URL
+  image: string; // URL or base64 data URL
   boardType: "Board of Directors" | "Management";
   displayOrder: number;
   showOnSite: boolean;
@@ -84,4 +90,9 @@ export interface AdminProfile {
   email: string;
   name: string;
   avatarUrl?: string;
+}
+
+export interface AdminLogin {
+  username: string;
+  password: string;
 }
