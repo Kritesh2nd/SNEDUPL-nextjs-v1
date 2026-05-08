@@ -22,6 +22,7 @@ import {
   DEFAULT_ADMIN_PROFILE,
 } from "@/lib/constants";
 import { getLocalStorage, isTokenExpired } from "@/lib/utils";
+import { getMe } from "@/app/admin/profile/action";
 
 interface SiteContextValue {
   siteContent: SiteContent;
@@ -160,6 +161,21 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     const localToken: string = getLocalStorage("token") ?? "";
     const tokenExpired = isTokenExpired(localToken);
     setToken(tokenExpired ? "" : localToken);
+
+    const fetchAdminProfile = async () => {
+      try {
+        const res = await getMe();
+        const admin: AdminProfile = await res.json();
+
+        console.log("admin", admin);
+
+        setAdminProfile(admin);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchAdminProfile();
 
     setHydration(true);
   }, []);

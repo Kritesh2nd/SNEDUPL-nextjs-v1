@@ -1,36 +1,12 @@
 "use client";
-import React, { useState } from "react";
-import { useSite } from "@/context/SiteContext";
-import { Input } from "@/components/ui/Input";
-import Button from "@/components/ui/Button";
-import { Shield, User, Mail, AtSign } from "lucide-react";
-import { getAdminData } from "@/lib/utils";
-import { AdminLogin } from "@/types";
 
-const DUMMY: AdminLogin = getAdminData();
+import { useSite } from "@/context/SiteContext";
+import { Shield, User, Mail, AtSign } from "lucide-react";
+import { getBaseUrl } from "@/lib/utils";
+import Image from "next/image";
+
 export default function AdminProfilePage() {
   const { adminProfile } = useSite();
-  const [pwForm, setPwForm] = useState({ current: "", next: "", confirm: "" });
-  const [pwErrors, setPwErrors] = useState<Record<string, string>>({});
-  const [pwLoading, setPwLoading] = useState(false);
-  const [pwSuccess, setPwSuccess] = useState(false);
-
-  const changePassword = async () => {
-    const e: Record<string, string> = {};
-    if (pwForm.current !== DUMMY.password)
-      e.current = "Incorrect current password";
-    if (!pwForm.next || pwForm.next.length < 6) e.next = "Minimum 6 characters";
-    if (pwForm.next !== pwForm.confirm) e.confirm = "Passwords do not match";
-    setPwErrors(e);
-    if (Object.keys(e).length) return;
-    setPwLoading(true);
-    await new Promise((r) => setTimeout(r, 900));
-    console.log("Password change requested (backend integration pending)");
-    setPwLoading(false);
-    setPwSuccess(true);
-    setPwForm({ current: "", next: "", confirm: "" });
-    setTimeout(() => setPwSuccess(false), 3000);
-  };
 
   return (
     <div className="space-y-8 max-w-xl">
@@ -67,6 +43,7 @@ export default function AdminProfilePage() {
         {/* Avatar */}
         <div className="px-6 pb-6" style={{ background: "#0a1a0d" }}>
           <div className="relative -mt-10 mb-4 inline-block">
+            {/* {`${getBaseUrl()}${adminProfile.avatarUrl}`} */}
             <div
               className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center"
               style={{
@@ -77,12 +54,15 @@ export default function AdminProfilePage() {
               }}
             >
               {adminProfile.avatarUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={adminProfile.avatarUrl}
-                  alt={adminProfile.name}
-                  className="w-full h-full object-cover rounded-full"
-                />
+                <div className="relative w-20 h-20">
+                  <Image
+                    unoptimized
+                    src={`${getBaseUrl()}${adminProfile.avatarUrl}`}
+                    fill
+                    className="object-cover rounded-full"
+                    alt={adminProfile.name}
+                  />
+                </div>
               ) : (
                 <span
                   className="font-display text-3xl"
@@ -167,77 +147,6 @@ export default function AdminProfilePage() {
               update profile details.
             </p>
           </div>
-        </div>
-      </div>
-
-      {/* Password change */}
-      <div
-        className="rounded-xl p-6 space-y-4"
-        style={{
-          background: "#0a1a0d",
-          border: "1px solid rgba(74,222,128,0.1)",
-        }}
-      >
-        <div>
-          <h2 className="text-sm font-semibold text-white tracking-wide">
-            Change Password
-          </h2>
-          <p className="text-xs text-white/35 mt-1">
-            Demo hint: current password is{" "}
-            <code
-              className="font-mono px-1 py-0.5 rounded text-[11px]"
-              style={{
-                background: "rgba(74,222,128,0.1)",
-                color: "var(--g400)",
-              }}
-            >
-              {DUMMY.username}
-            </code>
-          </p>
-        </div>
-        <Input
-          label="Current Password"
-          type="password"
-          value={pwForm.current}
-          onChange={(e) => {
-            setPwForm((p) => ({ ...p, current: e.target.value }));
-            setPwErrors((p) => ({ ...p, current: "" }));
-          }}
-          error={pwErrors.current}
-        />
-        <Input
-          label="New Password"
-          type="password"
-          value={pwForm.next}
-          onChange={(e) => {
-            setPwForm((p) => ({ ...p, next: e.target.value }));
-            setPwErrors((p) => ({ ...p, next: "" }));
-          }}
-          error={pwErrors.next}
-        />
-        <Input
-          label="Confirm New Password"
-          type="password"
-          value={pwForm.confirm}
-          onChange={(e) => {
-            setPwForm((p) => ({ ...p, confirm: e.target.value }));
-            setPwErrors((p) => ({ ...p, confirm: "" }));
-          }}
-          error={pwErrors.confirm}
-        />
-        <div className="flex items-center gap-3 pt-1">
-          <Button
-            variant="secondary"
-            loading={pwLoading}
-            onClick={changePassword}
-          >
-            Update Password
-          </Button>
-          {pwSuccess && (
-            <span className="text-xs fade-up" style={{ color: "var(--g400)" }}>
-              ✓ Password updated
-            </span>
-          )}
         </div>
       </div>
     </div>

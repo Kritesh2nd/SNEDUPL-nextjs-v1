@@ -26,7 +26,7 @@ export function useApiMiddleware() {
         // valid token → attach header
         config.headers = config.headers || {};
         config.headers.Authorization = `Bearer ${token}`;
-
+        console.log("config", config);
         return config;
       },
       (error) => Promise.reject(error),

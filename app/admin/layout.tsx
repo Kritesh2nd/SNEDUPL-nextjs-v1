@@ -7,12 +7,14 @@ import { isTokenExpired } from "@/lib/utils";
 import { useSite } from "../../context/SiteContext";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/sections/Loading";
+import { useApiMiddleware } from "@/lib/useApiMiddleware";
 
 export default function AdminRootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  useApiMiddleware();
   const route = useRouter();
 
   const { token, hydration } = useSite();

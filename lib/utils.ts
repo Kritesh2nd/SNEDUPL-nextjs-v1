@@ -67,3 +67,10 @@ export function isTokenExpired(token: string): boolean {
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
+
+export const getBaseUrl = (): string => {
+  const url = process.env.NEXT_PUBLIC_API_BASE_URL;
+  if (!url) throw new Error("Base Url Not Found");
+
+  return url;
+};

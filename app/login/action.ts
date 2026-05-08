@@ -1,9 +1,8 @@
+import { getBaseUrl } from "@/lib/utils";
 import { LoginDto } from "../../../../backend/distillery-api/src/auth/dto/login.dto";
 
-const apiBaseUrl =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 export async function loginUser(data: LoginDto) {
-  const res = await fetch(apiBaseUrl + "/auth/login", {
+  const res = await fetch(getBaseUrl() + "/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
