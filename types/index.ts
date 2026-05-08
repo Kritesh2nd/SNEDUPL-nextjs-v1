@@ -71,8 +71,7 @@ export interface SiteContent {
   timeline: TimelineEvent[];
   leadership: LeadershipProfile[];
   contactInfo: ContactInfo;
-  aboutSummary: string;
-  brandStory: string;
+  aboutContent: AboutContent;
 }
 
 export interface Inquiry {
@@ -100,4 +99,9 @@ export interface AdminLogin {
 export interface LoginResponseDto {
   token: string;
   user: AdminProfile;
+}
+
+export interface AboutContent {
+  aboutSummary: string;
+  brandStory: string;
 }

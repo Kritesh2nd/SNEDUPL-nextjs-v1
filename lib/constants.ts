@@ -10,6 +10,7 @@ import type {
   HeroContent,
   Inquiry,
   AdminProfile,
+  AboutContent,
 } from "@/types";
 
 export const COMPANY_NAME = "Shree New Everest Distillery Udhyog";
@@ -24,11 +25,12 @@ export const DEFAULT_HERO: HeroContent = {
   ctaText: "Explore Our Spirits",
 };
 
-export const DEFAULT_ABOUT_SUMMARY =
-  "Shree New Everest Distillery Udhyog stands at the confluence of Himalayan heritage and world-class distillation. Born in Nepal, crafted for connoisseurs globally, our spirits embody the purity of mountain water, the warmth of aged grain, and the boldness of a nation rising.";
-
-export const DEFAULT_BRAND_STORY =
-  "Founded in 2011, Shree New Everest Distillery Udhyog has spent over a decade quietly perfecting its craft in the shadow of the Himalayas. What began as a vision to bring world-class spirits from Nepal has evolved into a portfolio spanning soju, whisky, vodka, and innovative ready-to-drink beverages. Our 85-Kattha facility, established in 2018, represents one of Nepal's most modern distillation complexes — a testament to unwavering commitment to quality, precision, and pride in Nepali craftsmanship.";
+export const DEFAULT_ABOUT_CONTENT: AboutContent = {
+  aboutSummary:
+    "Shree New Everest Distillery Udhyog stands at the confluence of Himalayan heritage and world-class distillation. Born in Nepal, crafted for connoisseurs globally, our spirits embody the purity of mountain water, the warmth of aged grain, and the boldness of a nation rising.",
+  brandStory:
+    "Founded in 2011, Shree New Everest Distillery Udhyog has spent over a decade quietly perfecting its craft in the shadow of the Himalayas. What began as a vision to bring world-class spirits from Nepal has evolved into a portfolio spanning soju, whisky, vodka, and innovative ready-to-drink beverages. Our 85-Kattha facility, established in 2018, represents one of Nepal's most modern distillation complexes — a testament to unwavering commitment to quality, precision, and pride in Nepali craftsmanship.",
+};
 
 export const DEFAULT_DISTILLERY_DETAILS = {
   area: "85 Kattha",
@@ -427,8 +429,7 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
   timeline: DEFAULT_TIMELINE,
   leadership: DEFAULT_LEADERSHIP,
   contactInfo: DEFAULT_CONTACT,
-  aboutSummary: DEFAULT_ABOUT_SUMMARY,
-  brandStory: DEFAULT_BRAND_STORY,
+  aboutContent: DEFAULT_ABOUT_CONTENT,
 };
 
 export const DEFAULT_INQUIRIES: Inquiry[] = [

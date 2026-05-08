@@ -45,10 +45,10 @@ export default function AboutSection() {
             <SectionTitle
               eyebrow="Our Heritage"
               title={"Nepal's Spirit,\nDistilled for\nthe World"}
-              subtitle={siteContent.aboutSummary}
+              subtitle={siteContent.aboutContent.aboutSummary}
             />
             <div className="mt-8 space-y-3 text-white/45 text-sm leading-relaxed">
-              {siteContent.brandStory
+              {siteContent.aboutContent.brandStory
                 .split(". ")
                 .reduce<string[][]>((acc, s, i) => {
                   const chunk = Math.floor(i / 2);

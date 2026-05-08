@@ -3,13 +3,18 @@ import React, { useState } from "react";
 import { useSite } from "@/context/SiteContext";
 import Button from "@/components/ui/Button";
 import { Input, Textarea } from "@/components/ui/Input";
+import { AboutContent, HeroContent } from "@/types";
+import { postAbout, postHero } from "./action";
+import toast from "react-hot-toast";
 
 export default function AdminHeroPage() {
   const { siteContent, updateHero, updateAbout } = useSite();
-  const [hero, setHero] = useState({ ...siteContent.heroContent });
+  const [heroContent, setHero] = useState<HeroContent>({
+    ...siteContent.heroContent,
+  });
   const [about, setAbout] = useState({
-    summary: siteContent.aboutSummary,
-    story: siteContent.brandStory,
+    summary: siteContent.aboutContent.aboutSummary,
+    story: siteContent.aboutContent.brandStory,
   });
   const [heroLoading, setHeroLoading] = useState(false);
   const [aboutLoading, setAboutLoading] = useState(false);
@@ -19,15 +24,20 @@ export default function AdminHeroPage() {
 
   const saveHero = async () => {
     const e: Record<string, string> = {};
-    if (!hero.tagline.trim()) e.tagline = "Tagline required";
-    if (!hero.subTagline.trim()) e.subTagline = "Sub-tagline required";
-    if (!hero.ctaText.trim()) e.ctaText = "CTA text required";
+    if (!heroContent.tagline.trim()) e.tagline = "Tagline required";
+    if (!heroContent.subTagline.trim()) e.subTagline = "Sub-tagline required";
+    if (!heroContent.ctaText.trim()) e.ctaText = "CTA text required";
     setErrors(e);
     if (Object.keys(e).length) return;
     setHeroLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
-    updateHero(hero);
-    console.log("Hero updated:", hero);
+
+    const res = await postHero(heroContent);
+    if (res.status == 200) {
+      toast.error("Hero Content Updated Successfully");
+      const updatedHeroData: HeroContent = await res.json();
+      updateHero(updatedHeroData);
+    }
+
     setHeroLoading(false);
     setHeroSaved(true);
     setTimeout(() => setHeroSaved(false), 2500);
@@ -37,12 +47,28 @@ export default function AdminHeroPage() {
     const e: Record<string, string> = {};
     if (!about.summary.trim()) e.summary = "Summary required";
     if (!about.story.trim()) e.story = "Brand story required";
+
     setErrors(e);
     if (Object.keys(e).length) return;
     setAboutLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
-    updateAbout(about.summary, about.story);
-    console.log("About updated:", about);
+
+    const aboutContent: AboutContent = {
+      aboutSummary: about.summary,
+      brandStory: about.story,
+    };
+
+    const res = await postAbout(aboutContent);
+
+    if (!res.ok) {
+      toast.error("Failed to Update About Content");
+    }
+
+    if (res.status == 200) {
+      toast.error("About Content Updated Successfully");
+      const updatedAboutData: AboutContent = await res.json();
+      updateAbout(updatedAboutData);
+    }
+
     setAboutLoading(false);
     setAboutSaved(true);
     setTimeout(() => setAboutSaved(false), 2500);
@@ -74,7 +100,7 @@ export default function AdminHeroPage() {
         </h2>
         <Input
           label="Main Tagline"
-          value={hero.tagline}
+          value={heroContent.tagline}
           onChange={(e) => {
             setHero((p) => ({ ...p, tagline: e.target.value }));
             clearErr("tagline");
@@ -84,7 +110,7 @@ export default function AdminHeroPage() {
         />
         <Input
           label="Sub Tagline"
-          value={hero.subTagline}
+          value={heroContent.subTagline}
           onChange={(e) => {
             setHero((p) => ({ ...p, subTagline: e.target.value }));
             clearErr("subTagline");
@@ -94,7 +120,7 @@ export default function AdminHeroPage() {
         />
         <Input
           label="CTA Button Text"
-          value={hero.ctaText}
+          value={heroContent.ctaText}
           onChange={(e) => {
             setHero((p) => ({ ...p, ctaText: e.target.value }));
             clearErr("ctaText");

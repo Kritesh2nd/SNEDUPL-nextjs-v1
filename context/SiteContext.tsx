@@ -15,6 +15,7 @@ import type {
   HeroContent,
   Inquiry,
   AdminProfile,
+  AboutContent,
 } from "@/types";
 import {
   DEFAULT_SITE_CONTENT,
@@ -23,12 +24,14 @@ import {
 } from "@/lib/constants";
 import { getLocalStorage, isTokenExpired } from "@/lib/utils";
 import { getMe } from "@/app/admin/profile/action";
+import { getAbout, getHero } from "@/app/admin/hero/action";
+import { HeroContent } from "../types/index";
 
 interface SiteContextValue {
   siteContent: SiteContent;
   setSiteContent: (c: SiteContent) => void;
   updateHero: (h: HeroContent) => void;
-  updateAbout: (summary: string, story: string) => void;
+  updateAbout: (a: AboutContent) => void;
   addProduct: (p: Product) => void;
   updateProduct: (i: number, p: Product) => void;
   deleteProduct: (i: number) => void;
@@ -74,8 +77,8 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     [],
   );
   const updateAbout = useCallback(
-    (aboutSummary: string, brandStory: string) =>
-      setSiteContentState((p) => ({ ...p, aboutSummary, brandStory })),
+    (aboutContent: AboutContent) =>
+      setSiteContentState((p) => ({ ...p, aboutContent })),
     [],
   );
   const addProduct = useCallback(
@@ -157,26 +160,50 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     [],
   );
 
-  useEffect(() => {
-    const localToken: string = getLocalStorage("token") ?? "";
+  const fecthToken = async () => {
+    const localToken: string = (await getLocalStorage("token")) ?? "";
     const tokenExpired = isTokenExpired(localToken);
     setToken(tokenExpired ? "" : localToken);
+  };
 
-    const fetchAdminProfile = async () => {
-      try {
-        const res = await getMe();
-        const admin: AdminProfile = await res.json();
+  const fetchAdminProfile = async () => {
+    try {
+      const res = await getMe();
+      const admin: AdminProfile = await res.json();
+      console.log("admin", admin);
+      setAdminProfile(admin);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-        console.log("admin", admin);
-
-        setAdminProfile(admin);
-      } catch (error) {
-        console.error(error);
+  const fetchAboutContent = async () => {
+    try {
+      const res = await getAbout();
+      if (res.ok) {
+        const aboutContent: AboutContent = await res.json();
+        updateAbout(aboutContent);
       }
-    };
+    } catch (err) {}
+  };
+
+  const fetchHeroContent = async () => {
+    try {
+      const res = await getHero();
+      if (res.ok) {
+        const heroContent: HeroContent = await res.json();
+        console.log("heroContent");
+        updateHero(heroContent);
+      }
+    } catch (err) {}
+  };
+
+  useEffect(() => {
+    fecthToken();
 
     fetchAdminProfile();
-
+    fetchHeroContent();
+    fetchAboutContent();
     setHydration(true);
   }, []);
 

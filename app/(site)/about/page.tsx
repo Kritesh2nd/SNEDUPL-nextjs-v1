@@ -73,7 +73,7 @@ export default function AboutPage() {
             <span className="text-electric-green">Heritage</span>
           </h1>
           <p className="text-white/50 text-base leading-relaxed max-w-2xl mx-auto">
-            {siteContent.aboutSummary}
+            {siteContent.aboutContent.aboutSummary}
           </p>
           <div
             className="w-16 h-px mx-auto mt-8"
@@ -95,7 +95,7 @@ export default function AboutPage() {
                 title="15 Years of Distillation Excellence"
               />
               <div className="mt-8 space-y-5 text-white/50 text-sm leading-[1.9]">
-                {siteContent.brandStory
+                {siteContent.aboutContent.brandStory
                   .split(". ")
                   .reduce<string[][]>((acc, s, i) => {
                     const chunk = Math.floor(i / 3);
