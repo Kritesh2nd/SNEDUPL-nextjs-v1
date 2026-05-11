@@ -2,6 +2,8 @@
 import React from "react";
 import type { Product } from "@/types";
 import { PRODUCT_CATEGORY_LABELS } from "@/lib/constants";
+import Image from "next/image";
+import { getBaseUrl } from "@/lib/utils";
 
 interface Props {
   product: Product;
@@ -22,7 +24,7 @@ export default function ProductCard({ product, onClick }: Props) {
   return (
     <div
       onClick={onClick}
-      className="group relative glass rounded-xl overflow-hidden hover-lift cursor-pointer"
+      className="group relative glass rounded-xl overflow-hidden hover-lift cursor-pointer "
       style={{ border: "1px solid rgba(255,255,255,0.07)" }}
     >
       {/* Image / Visual */}
@@ -34,11 +36,12 @@ export default function ProductCard({ product, onClick }: Props) {
         }}
       >
         {product.image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={product.image}
+          <Image
+            unoptimized
+            src={`${getBaseUrl()}${product.image}`}
+            fill
+            className="object-cover rounded-full"
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
@@ -78,31 +81,35 @@ export default function ProductCard({ product, onClick }: Props) {
             </div>
           </div>
         )}
+        <div className="absolute top-3 left-3 w-9/10">
+          <div className="flex relative gap-3">
+            {product.featured && (
+              <span
+                className="flex items-center text-[9px] font-bold tracking-widest uppercase px-2 py-1 rounded-full"
+                style={{
+                  background: "var(--g600)",
+                  color: "#fff",
+                  boxShadow: "0 0 10px rgba(34,197,94,0.4)",
+                }}
+              >
+                Featured
+              </span>
+            )}
+            {product.isUpcoming && (
+              <span
+                className="flex items-center text-[9px] font-bold tracking-widest uppercase px-2 py-1 rounded-full"
+                style={{
+                  background: "rgba(59,130,246,0.3)",
+                  color: "var(--b200)",
+                  border: "1px solid rgba(96,165,250,0.3)",
+                }}
+              >
+                Coming Soon
+              </span>
+            )}
+          </div>
+        </div>
 
-        {product.featured && (
-          <span
-            className="absolute top-3 left-3 text-[9px] font-bold tracking-widest uppercase px-2 py-0.5 rounded-full"
-            style={{
-              background: "var(--g600)",
-              color: "#fff",
-              boxShadow: "0 0 10px rgba(34,197,94,0.4)",
-            }}
-          >
-            Featured
-          </span>
-        )}
-        {product.isUpcoming && (
-          <span
-            className="absolute top-3 left-3 text-[9px] font-bold tracking-widest uppercase px-2 py-0.5 rounded-full"
-            style={{
-              background: "rgba(59,130,246,0.3)",
-              color: "var(--b200)",
-              border: "1px solid rgba(96,165,250,0.3)",
-            }}
-          >
-            Coming Soon
-          </span>
-        )}
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-[rgba(22,163,74,0)] group-hover:bg-[rgba(22,163,74,0.06)] transition-colors duration-300" />
       </div>

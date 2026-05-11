@@ -7,6 +7,7 @@ import SectionTitle from "@/components/ui/SectionTitle";
 import type { Product, ProductCategory } from "@/types";
 import { PRODUCT_CATEGORY_LABELS } from "@/lib/constants";
 import { Search } from "lucide-react";
+import { getBaseUrl } from "@/lib/utils";
 
 const FILTERS: {
   value: ProductCategory | "ALL";
@@ -114,7 +115,6 @@ export default function ProductsPage() {
                 ))}
               </div>
             </aside>
-
             {/* Main content */}
             <div className="flex-1 min-w-0">
               {/* Search */}
@@ -192,7 +192,7 @@ export default function ProductsPage() {
             {selected.image && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={selected.image}
+                src={getBaseUrl() + selected.image}
                 alt={selected.name}
                 className="w-full h-48 object-cover rounded-lg"
               />
@@ -223,22 +223,25 @@ export default function ProductsPage() {
                 </p>
               </div>
             </div>
-            <div>
-              <p className="text-[10px] text-white/40 uppercase tracking-wider mb-2">
-                Taste Profile
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {selected.tasteNotes.map((n) => (
-                  <span
-                    key={n.label}
-                    className="text-xs px-3 py-1 rounded-full tag-green"
-                  >
-                    {n.label}
-                  </span>
-                ))}
+            {selected.tasteNotes && selected.tasteNotes.length > 0 && (
+              <div>
+                <p className="text-[10px] text-white/40 uppercase tracking-wider mb-2">
+                  Taste Profile
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {selected.tasteNotes.map((n) => (
+                    <span
+                      key={n.label}
+                      className="text-xs px-3 py-1 rounded-full tag-green"
+                    >
+                      {n.label}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-            {selected.variants && (
+            )}
+
+            {selected.variants && selected.variants.length > 0 && (
               <div>
                 <p className="text-[10px] text-white/40 uppercase tracking-wider mb-2">
                   Variants

@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import { Upload, X, Image as ImageIcon } from "lucide-react";
+import { getBaseUrl } from "@/lib/utils";
 
 interface ImageUploadProps {
   label?: string;
@@ -10,6 +11,7 @@ interface ImageUploadProps {
   className?: string;
   previewSize?: "sm" | "md" | "lg";
   circular?: boolean;
+  setImage: (img: File | null) => void;
 }
 
 export default function ImageUpload({
@@ -20,9 +22,11 @@ export default function ImageUpload({
   className = "",
   previewSize = "md",
   circular = false,
+  setImage,
 }: ImageUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
+  const [imageUpload, setImageUpload] = useState<boolean>(false);
   const [error, setError] = useState("");
 
   const previewSizes = { sm: "h-24", md: "h-40", lg: "h-56" };
@@ -43,6 +47,7 @@ export default function ImageUpload({
       onChange(result);
     };
     reader.readAsDataURL(file);
+    setImage(file);
   };
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,6 +67,8 @@ export default function ImageUpload({
     onClear?.();
     onChange("");
     setError("");
+    setImageUpload(false);
+    setImage(null);
   };
 
   return (
@@ -74,7 +81,6 @@ export default function ImageUpload({
           {label}
         </span>
       )}
-
       {value ? (
         /* Preview */
         <div
@@ -82,7 +88,7 @@ export default function ImageUpload({
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={value}
+            src={!imageUpload ? getBaseUrl() + value : value}
             alt="Preview"
             className={`w-full h-full object-cover ${circular ? "rounded-full" : "rounded-lg"} border border-white/10`}
           />
@@ -92,7 +98,10 @@ export default function ImageUpload({
           >
             <button
               type="button"
-              onClick={() => inputRef.current?.click()}
+              onClick={() => {
+                inputRef.current?.click();
+                setImageUpload(true);
+              }}
               className="p-2 rounded-full bg-green-600/80 hover:bg-green-500 transition-colors text-white"
               title="Replace image"
             >
@@ -111,7 +120,10 @@ export default function ImageUpload({
       ) : (
         /* Drop zone */
         <div
-          onClick={() => inputRef.current?.click()}
+          onClick={() => {
+            inputRef.current?.click();
+            setImageUpload(true);
+          }}
           onDragOver={(e) => {
             e.preventDefault();
             setDragging(true);
@@ -148,9 +160,7 @@ export default function ImageUpload({
           </div>
         </div>
       )}
-
       {error && <p className="text-xs text-red-400">{error}</p>}
-
       <input
         ref={inputRef}
         type="file"

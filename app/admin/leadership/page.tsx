@@ -38,6 +38,7 @@ export default function AdminLeadershipPage() {
   const [loading, setLoading] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [image, setImage] = useState<File | null>(null);
   const [tab, setTab] = useState<"Board of Directors" | "Management">(
     "Board of Directors",
   );
@@ -259,6 +260,7 @@ export default function AdminLeadershipPage() {
             onChange={(v) => setF("image", v)}
             previewSize="sm"
             circular
+            setImage={setImage}
           />
           <Input
             label="Full Name"

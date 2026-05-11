@@ -16,6 +16,7 @@ export interface TasteNote {
 }
 
 export interface Product {
+  id?: string;
   name: string;
   category: ProductCategory;
   tagline: string;

@@ -8,6 +8,10 @@ import ImageUpload from "@/components/ui/ImageUpload";
 import { Plus, Pencil, Trash2, Search } from "lucide-react";
 import type { Product, ProductCategory } from "@/types";
 import { PRODUCT_CATEGORY_LABELS } from "@/lib/constants";
+import Image from "next/image";
+import { getBaseUrl } from "@/lib/utils";
+import { deleteProduct, patchProduct, postProduct } from "./action";
+import toast from "react-hot-toast";
 
 const CAT_OPTIONS = Object.entries(PRODUCT_CATEGORY_LABELS).map(
   ([value, label]) => ({ value, label }),
@@ -39,7 +43,12 @@ const EMPTY: FormState = {
 };
 
 export default function AdminProductsPage() {
-  const { siteContent, addProduct, updateProduct, deleteProduct } = useSite();
+  const {
+    siteContent,
+
+    fetchProductContent,
+  } = useSite();
+  const [selectedId, setSelectedId] = useState<string>("");
   const [search, setSearch] = useState("");
   const [catFilter, setCatFilter] = useState("ALL");
   const [modalOpen, setModalOpen] = useState(false);
@@ -48,6 +57,7 @@ export default function AdminProductsPage() {
   const [loading, setLoading] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [image, setImage] = useState<File | null>(null);
 
   const products = siteContent.products.filter((p) => {
     const ms = p.name.toLowerCase().includes(search.toLowerCase());
@@ -92,7 +102,7 @@ export default function AdminProductsPage() {
   const handleSave = async () => {
     if (!validate()) return;
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 600));
+
     const product: Product = {
       name: form.name,
       category: form.category as ProductCategory,
@@ -108,22 +118,46 @@ export default function AdminProductsPage() {
         .map((s) => ({ label: s.trim() }))
         .filter((n) => n.label),
     };
-    if (editIndex !== null) {
-      updateProduct(editIndex, product);
-      console.log("Updated product:", product);
-    } else {
-      addProduct(product);
-      console.log("Added product:", product);
+
+    const action = editIndex
+      ? patchProduct(product, image, selectedId)
+      : postProduct(product, image);
+
+    const res = await action;
+
+    if (res.ok) {
+      const toastMessage =
+        editIndex == null
+          ? "Product Added Successfully"
+          : "Prodcut Updated Successfully";
+      fetchProductContent();
+      toast.success(toastMessage);
     }
+    if (!res.ok) {
+      const toastMessage =
+        editIndex == null
+          ? "Product Failed to Add"
+          : "Prodcut Failed to Update";
+      toast.error(toastMessage);
+    }
+
     setLoading(false);
     setModalOpen(false);
   };
 
-  const handleDelete = async (idx: number) => {
+  const handleDelete = async () => {
+    console.log("delete id", selectedId);
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 400));
-    deleteProduct(idx);
-    console.log("Deleted product at index:", idx);
+    const res = await deleteProduct(selectedId);
+    if (res.ok) {
+      const toastMessage = "Product Deleted Successfully";
+      fetchProductContent();
+      toast.success(toastMessage);
+    }
+    if (!res.ok) {
+      const toastMessage = "Product Failed to Delete";
+      toast.error(toastMessage);
+    }
     setLoading(false);
     setDeleteConfirm(null);
   };
@@ -225,7 +259,7 @@ export default function AdminProductsPage() {
                       {product.image ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
-                          src={product.image}
+                          src={getBaseUrl() + product.image}
                           alt={product.name}
                           className="w-full h-full object-cover"
                         />
@@ -269,14 +303,20 @@ export default function AdminProductsPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => openEdit(ri)}
+                        onClick={() => {
+                          openEdit(ri);
+                          setSelectedId(product.id ?? "");
+                        }}
                       >
                         <Pencil size={12} />
                       </Button>
                       <Button
                         variant="danger"
                         size="sm"
-                        onClick={() => setDeleteConfirm(ri)}
+                        onClick={() => {
+                          setDeleteConfirm(ri);
+                          setSelectedId(product.id ?? "");
+                        }}
                       >
                         <Trash2 size={12} />
                       </Button>
@@ -308,6 +348,7 @@ export default function AdminProductsPage() {
             value={form.image}
             onChange={(v) => set("image", v)}
             previewSize="md"
+            setImage={setImage}
           />
           <div className="grid sm:grid-cols-2 gap-4">
             <Input
@@ -366,7 +407,9 @@ export default function AdminProductsPage() {
               <input
                 type="checkbox"
                 checked={form.featured}
-                onChange={(e) => set("featured", e.target.checked)}
+                onChange={(e) => {
+                  set("featured", e.target.checked);
+                }}
                 className="accent-[var(--g600)]"
               />
               <span className="text-xs text-white/55">Featured Product</span>
@@ -417,9 +460,7 @@ export default function AdminProductsPage() {
             <Button
               variant="danger"
               loading={loading}
-              onClick={() =>
-                deleteConfirm !== null && handleDelete(deleteConfirm)
-              }
+              onClick={() => handleDelete()}
               className="flex-1"
             >
               Delete

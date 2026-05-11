@@ -9,6 +9,7 @@ import Button from "@/components/ui/Button";
 import type { Product, ProductCategory } from "@/types";
 import { PRODUCT_CATEGORY_LABELS } from "@/lib/constants";
 import { ArrowRight } from "lucide-react";
+import { getBaseUrl } from "@/lib/utils";
 
 const FILTERS: { value: ProductCategory | "ALL"; label: string }[] = [
   { value: "ALL", label: "All" },
@@ -110,6 +111,7 @@ export default function ProductsSection() {
         )}
       </div>
 
+      {/* Product detail modal */}
       {selected && (
         <Modal
           open={!!selected}
@@ -118,17 +120,25 @@ export default function ProductsSection() {
           maxWidth="max-w-lg"
         >
           <div className="space-y-4">
-            <span
+            <p
               className="text-[10px] tracking-widest uppercase"
               style={{ color: "var(--g400)" }}
             >
               {PRODUCT_CATEGORY_LABELS[selected.category]}
-            </span>
+            </p>
             <p className="text-white/50 text-sm italic">{selected.tagline}</p>
+            {selected.image && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={getBaseUrl() + selected.image}
+                alt={selected.name}
+                className="w-full h-48 object-cover rounded-lg"
+              />
+            )}
             <p className="text-white/55 text-sm leading-relaxed">
               {selected.description}
             </p>
-            <div className="grid grid-cols-2 gap-3 mt-3">
+            <div className="grid grid-cols-2 gap-3">
               {selected.alcoholPercent != null && (
                 <div className="glass-green rounded-lg p-3">
                   <p className="text-[10px] text-white/40 uppercase tracking-wider mb-1">
@@ -151,22 +161,25 @@ export default function ProductsSection() {
                 </p>
               </div>
             </div>
-            <div>
-              <p className="text-[10px] text-white/40 uppercase tracking-wider mb-2">
-                Taste Profile
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {selected.tasteNotes.map((n) => (
-                  <span
-                    key={n.label}
-                    className="text-xs px-3 py-1 rounded-full tag-green"
-                  >
-                    {n.label}
-                  </span>
-                ))}
+            {selected.tasteNotes && selected.tasteNotes.length > 0 && (
+              <div>
+                <p className="text-[10px] text-white/40 uppercase tracking-wider mb-2">
+                  Taste Profile
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {selected.tasteNotes.map((n) => (
+                    <span
+                      key={n.label}
+                      className="text-xs px-3 py-1 rounded-full tag-green"
+                    >
+                      {n.label}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-            {selected.variants && (
+            )}
+
+            {selected.variants && selected.variants.length > 0 && (
               <div>
                 <p className="text-[10px] text-white/40 uppercase tracking-wider mb-2">
                   Variants

@@ -25,7 +25,7 @@ import {
 import { getLocalStorage, isTokenExpired } from "@/lib/utils";
 import { getMe } from "@/app/admin/profile/action";
 import { getAbout, getHero } from "@/app/admin/hero/action";
-import { HeroContent } from "../types/index";
+import { getProduct } from "@/app/admin/products/action";
 
 interface SiteContextValue {
   siteContent: SiteContent;
@@ -49,6 +49,7 @@ interface SiteContextValue {
   setToken: (t: string) => void;
   ageVerified: boolean;
   setAgeVerified: (v: boolean) => void;
+  fetchProductContent: () => void;
 
   hydration: boolean;
   setHydration: (h: boolean) => void;
@@ -96,6 +97,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
         products[idx] = product;
         return { ...p, products };
       }),
+    [],
+  );
+  const updateAllProducts = useCallback(
+    (products: Product[]) => setSiteContentState((p) => ({ ...p, products })),
     [],
   );
   const deleteProduct = useCallback(
@@ -192,8 +197,20 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       const res = await getHero();
       if (res.ok) {
         const heroContent: HeroContent = await res.json();
-        console.log("heroContent");
+        console.log("heroContent", heroContent);
         updateHero(heroContent);
+      }
+    } catch (err) {}
+  };
+
+  const fetchProductContent = async () => {
+    // getProduct;
+    try {
+      const res = await getProduct();
+      if (res.ok) {
+        const productContent: Product[] = await res.json();
+        console.log("productContent", productContent);
+        updateAllProducts(productContent);
       }
     } catch (err) {}
   };
@@ -204,6 +221,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     fetchAdminProfile();
     fetchHeroContent();
     fetchAboutContent();
+    fetchProductContent();
     setHydration(true);
   }, []);
 
@@ -233,6 +251,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
         setToken,
         hydration,
         setHydration,
+        fetchProductContent,
       }}
     >
       {children}
