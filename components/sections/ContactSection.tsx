@@ -5,6 +5,8 @@ import SectionTitle from "@/components/ui/SectionTitle";
 import { Input, Textarea } from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { MapPin, Phone, Mail, Building2, Factory } from "lucide-react";
+import { postInquirie } from "@/app/admin/inquiries/action";
+import toast from "react-hot-toast";
 
 interface FormState {
   name: string;
@@ -50,15 +52,17 @@ export default function ContactSection() {
   const handleSubmit = async () => {
     if (!validate()) return;
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    console.log("Form submitted:", form);
-    addInquiry({
-      name: form.name,
-      email: form.email,
-      phone: form.phone,
-      subject: form.subject,
-      message: form.message,
-    });
+
+    const res = await postInquirie(form);
+
+    if (res.ok) {
+      toast.success("Message sent Successfully");
+    }
+
+    if (!res.ok) {
+      toast.error("Message failed to sent");
+    }
+
     setLoading(false);
     setSuccess(true);
     setForm({ name: "", email: "", phone: "", subject: "", message: "" });

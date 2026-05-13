@@ -16,6 +16,7 @@ import type {
   Inquiry,
   AdminProfile,
   AboutContent,
+  ResponseDto,
 } from "@/types";
 import {
   DEFAULT_SITE_CONTENT,
@@ -28,6 +29,7 @@ import { getAbout, getHero } from "@/app/admin/hero/action";
 import { getProduct } from "@/app/admin/products/action";
 import { getLeader } from "@/app/admin/leadership/action";
 import { getContactInfo } from "@/app/admin/contact/action";
+import { getInquirie } from "@/app/admin/inquiries/action";
 
 interface SiteContextValue {
   siteContent: SiteContent;
@@ -45,6 +47,7 @@ interface SiteContextValue {
   inquiries: Inquiry[];
   addInquiry: (i: Omit<Inquiry, "createdAt" | "read">) => void;
   markInquiryRead: (i: number) => void;
+  setInquiries: (i: Inquiry[]) => void;
   deleteInquiry: (i: number) => void;
   adminProfile: AdminProfile;
   updateAdminProfile: (p: AdminProfile) => void;
@@ -56,6 +59,8 @@ interface SiteContextValue {
 
   fetchLeadershipContent: () => void;
   fetchContactInfoContent: () => void;
+
+  fetchInquiries: () => void;
 
   hydration: boolean;
   setHydration: (h: boolean) => void;
@@ -249,6 +254,16 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     } catch (err) {}
   };
 
+  const fetchInquiries = async () => {
+    try {
+      const res = await getInquirie("page=1&limit=10");
+      if (res.ok) {
+        const inquiryData: ResponseDto<Inquiry> = await res.json();
+        setInquiries(inquiryData.data);
+      }
+    } catch (err) {}
+  };
+
   useEffect(() => {
     fecthToken();
 
@@ -258,6 +273,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     fetchProductContent();
     fetchLeadershipContent();
     fetchContactInfoContent();
+    fetchInquiries();
     setHydration(true);
   }, []);
 
@@ -280,6 +296,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
         addInquiry,
         markInquiryRead,
         deleteInquiry,
+        setInquiries,
         adminProfile,
         updateAdminProfile,
         ageVerified,
@@ -291,6 +308,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
         fetchProductContent,
         fetchLeadershipContent,
         fetchContactInfoContent,
+        fetchInquiries,
       }}
     >
       {children}

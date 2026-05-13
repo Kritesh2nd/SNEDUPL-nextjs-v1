@@ -184,7 +184,7 @@ export default function AdminDashboardPage() {
             View All →
           </Link>
         </div>
-        <div className="space-y-2">
+        <div className="flex flex-col space-y-2 gap-1.5">
           {inquiries.slice(0, 5).map((inq, i) => (
             <Link key={i} href="/admin/inquiries">
               <div
