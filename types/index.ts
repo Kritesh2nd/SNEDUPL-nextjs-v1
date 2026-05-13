@@ -37,6 +37,7 @@ export interface TimelineEvent {
 }
 
 export interface LeadershipProfile {
+  id?: string;
   name: string;
   position: string;
   bio: string;
@@ -47,17 +48,20 @@ export interface LeadershipProfile {
 }
 
 export interface ContactInfo {
+  id?: string;
   factoryAddress: string;
   officeAddress: string;
   phone: string;
   email: string;
-  mapEmbedUrl: string;
+  mapEmbedUrl?: string;
   socialLinks: {
     facebook?: string;
     instagram?: string;
     linkedin?: string;
     twitter?: string;
   };
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface HeroContent {
@@ -76,13 +80,15 @@ export interface SiteContent {
 }
 
 export interface Inquiry {
+  id?: string;
   name: string;
   email: string;
   phone?: string;
   subject: string;
   message: string;
-  createdAt: string;
-  read: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  read?: boolean;
 }
 
 export interface AdminProfile {
@@ -105,4 +111,18 @@ export interface LoginResponseDto {
 export interface AboutContent {
   aboutSummary: string;
   brandStory: string;
+}
+
+export interface MetaDataResponse {
+  page: number | null;
+  limit: number | null;
+
+  totalItems: number;
+
+  totalPages: number;
+}
+
+export interface ResponseDto<T> {
+  data: T[];
+  metadata: MetaDataResponse;
 }

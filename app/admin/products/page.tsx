@@ -43,11 +43,7 @@ const EMPTY: FormState = {
 };
 
 export default function AdminProductsPage() {
-  const {
-    siteContent,
-
-    fetchProductContent,
-  } = useSite();
+  const { siteContent, fetchProductContent } = useSite();
   const [selectedId, setSelectedId] = useState<string>("");
   const [search, setSearch] = useState("");
   const [catFilter, setCatFilter] = useState("ALL");
@@ -129,7 +125,7 @@ export default function AdminProductsPage() {
       const toastMessage =
         editIndex == null
           ? "Product Added Successfully"
-          : "Prodcut Updated Successfully";
+          : "Product Updated Successfully";
       fetchProductContent();
       toast.success(toastMessage);
     }
@@ -137,7 +133,7 @@ export default function AdminProductsPage() {
       const toastMessage =
         editIndex == null
           ? "Product Failed to Add"
-          : "Prodcut Failed to Update";
+          : "Product Failed to Update";
       toast.error(toastMessage);
     }
 
@@ -146,7 +142,6 @@ export default function AdminProductsPage() {
   };
 
   const handleDelete = async () => {
-    console.log("delete id", selectedId);
     setLoading(true);
     const res = await deleteProduct(selectedId);
     if (res.ok) {

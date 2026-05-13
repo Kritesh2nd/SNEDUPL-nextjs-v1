@@ -26,6 +26,8 @@ import { getLocalStorage, isTokenExpired } from "@/lib/utils";
 import { getMe } from "@/app/admin/profile/action";
 import { getAbout, getHero } from "@/app/admin/hero/action";
 import { getProduct } from "@/app/admin/products/action";
+import { getLeader } from "@/app/admin/leadership/action";
+import { getContactInfo } from "@/app/admin/contact/action";
 
 interface SiteContextValue {
   siteContent: SiteContent;
@@ -37,6 +39,7 @@ interface SiteContextValue {
   deleteProduct: (i: number) => void;
   addLeader: (l: LeadershipProfile) => void;
   updateLeader: (i: number, l: LeadershipProfile) => void;
+  updateAllLeader: (l: LeadershipProfile[]) => void;
   deleteLeader: (i: number) => void;
   updateContact: (c: ContactInfo) => void;
   inquiries: Inquiry[];
@@ -50,6 +53,9 @@ interface SiteContextValue {
   ageVerified: boolean;
   setAgeVerified: (v: boolean) => void;
   fetchProductContent: () => void;
+
+  fetchLeadershipContent: () => void;
+  fetchContactInfoContent: () => void;
 
   hydration: boolean;
   setHydration: (h: boolean) => void;
@@ -126,6 +132,12 @@ export function SiteProvider({ children }: { children: ReactNode }) {
         leadership[idx] = leader;
         return { ...p, leadership };
       }),
+    [],
+  );
+
+  const updateAllLeader = useCallback(
+    (leadership: LeadershipProfile[]) =>
+      setSiteContentState((p) => ({ ...p, leadership })),
     [],
   );
   const deleteLeader = useCallback(
@@ -215,6 +227,28 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     } catch (err) {}
   };
 
+  const fetchLeadershipContent = async () => {
+    // getProduct;
+    try {
+      const res = await getLeader();
+      if (res.ok) {
+        const leadershipContent: LeadershipProfile[] = await res.json();
+        updateAllLeader(leadershipContent);
+      }
+    } catch (err) {}
+  };
+
+  const fetchContactInfoContent = async () => {
+    // getProduct;
+    try {
+      const res = await getContactInfo();
+      if (res.ok) {
+        const contactInfoContent: ContactInfo = await res.json();
+        updateContact(contactInfoContent);
+      }
+    } catch (err) {}
+  };
+
   useEffect(() => {
     fecthToken();
 
@@ -222,6 +256,8 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     fetchHeroContent();
     fetchAboutContent();
     fetchProductContent();
+    fetchLeadershipContent();
+    fetchContactInfoContent();
     setHydration(true);
   }, []);
 
@@ -237,6 +273,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
         deleteProduct,
         addLeader,
         updateLeader,
+        updateAllLeader,
         deleteLeader,
         updateContact,
         inquiries,
@@ -252,6 +289,8 @@ export function SiteProvider({ children }: { children: ReactNode }) {
         hydration,
         setHydration,
         fetchProductContent,
+        fetchLeadershipContent,
+        fetchContactInfoContent,
       }}
     >
       {children}

@@ -139,7 +139,9 @@ export default function AdminInquiriesPage() {
             </div>
             <div className="hidden sm:flex items-center gap-4 flex-shrink-0">
               <p className="text-xs text-white/20">
-                {new Date(inq.createdAt).toLocaleDateString()}
+                {inq.createdAt
+                  ? new Date(inq.createdAt).toLocaleDateString()
+                  : new Date().toLocaleDateString()}
               </p>
               <Button
                 variant="danger"
@@ -217,7 +219,9 @@ export default function AdminInquiriesPage() {
             </div>
             <p className="text-xs text-white/20">
               Received:{" "}
-              {new Date(inquiries[selected].createdAt).toLocaleString()}
+              {new Date(
+                inquiries[selected].createdAt ?? new Date(),
+              ).toLocaleString()}
             </p>
             <div className="flex gap-3 pt-2">
               <Button

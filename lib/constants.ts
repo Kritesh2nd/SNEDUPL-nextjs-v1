@@ -415,7 +415,6 @@ export const DEFAULT_CONTACT: ContactInfo = {
   officeAddress: "Koteshwor, Kathmandu, Nepal",
   phone: "+977 9768534235",
   email: "info.everestdistillery@gmail.com",
-  mapEmbedUrl: "",
   socialLinks: {
     facebook: "https://facebook.com/everestdistillery",
     instagram: "https://instagram.com/everestdistillery",

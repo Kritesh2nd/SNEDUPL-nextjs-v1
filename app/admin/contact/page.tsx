@@ -4,9 +4,11 @@ import { useSite } from "@/context/SiteContext";
 import Button from "@/components/ui/Button";
 import { Input, Textarea } from "@/components/ui/Input";
 import type { ContactInfo } from "@/types";
+import { postContactInfo } from "./action";
+import toast from "react-hot-toast";
 
 export default function AdminContactPage() {
-  const { siteContent, updateContact } = useSite();
+  const { siteContent, updateContact, fetchContactInfoContent } = useSite();
   const [form, setForm] = useState<ContactInfo>({ ...siteContent.contactInfo });
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -27,9 +29,21 @@ export default function AdminContactPage() {
   const handleSave = async () => {
     if (!validate()) return;
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
-    updateContact(form);
-    console.log("Contact info updated:", form);
+
+    const res = await postContactInfo(form);
+    if (res.ok) {
+      const contactInfo: ContactInfo = await res.json();
+
+      toast.success("Contact Info Updated Successfully");
+      updateContact(contactInfo);
+
+      fetchContactInfoContent();
+    }
+
+    if (!res.ok) {
+      toast.error("Failed to Update Contact Info");
+    }
+
     setLoading(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useSite } from "@/context/SiteContext";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { ExternalLink, Mail } from "lucide-react";
+import { getBaseUrl } from "@/lib/utils";
 
 export default function LeadershipPage() {
   const { siteContent } = useSite();
@@ -89,7 +90,7 @@ export default function LeadershipPage() {
                     {leader.image ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={leader.image}
+                        src={getBaseUrl() + leader.image}
                         alt={leader.name}
                         className="w-full h-full object-cover rounded-full"
                       />

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSite } from "@/context/SiteContext";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
@@ -15,6 +15,9 @@ import {
   ChevronDown,
 } from "lucide-react";
 import type { LeadershipProfile } from "@/types";
+import { deleteLeader, patchLeader, postLeader } from "./action";
+import toast from "react-hot-toast";
+import { getBaseUrl } from "@/lib/utils";
 
 const BOARD_OPTIONS = [
   { value: "Board of Directors", label: "Board of Directors" },
@@ -31,7 +34,8 @@ const EMPTY: LeadershipProfile = {
 };
 
 export default function AdminLeadershipPage() {
-  const { siteContent, addLeader, updateLeader, deleteLeader } = useSite();
+  const { siteContent, fetchLeadershipContent } = useSite();
+  const [selectedId, setSelectedId] = useState<string>("");
   const [modalOpen, setModalOpen] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [form, setForm] = useState<LeadershipProfile>({ ...EMPTY });
@@ -59,6 +63,7 @@ export default function AdminLeadershipPage() {
     setEditIndex(idx);
     setErrors({});
     setModalOpen(true);
+    console.log("idx", idx);
   };
 
   const validate = () => {
@@ -73,43 +78,67 @@ export default function AdminLeadershipPage() {
   const handleSave = async () => {
     if (!validate()) return;
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 600));
-    if (editIndex !== null) {
-      updateLeader(editIndex, form);
-      console.log("Updated leader:", form);
-    } else {
-      addLeader(form);
-      console.log("Added leader:", form);
+    const action =
+      editIndex != null
+        ? patchLeader(form, image, selectedId)
+        : postLeader(form, image);
+    const res = await action;
+
+    if (res.ok) {
+      const toastMessage =
+        editIndex == null
+          ? "Leader Added Successfully"
+          : "Leader Updated Successfully";
+      fetchLeadershipContent();
+      toast.success(toastMessage);
     }
+    if (!res.ok) {
+      const toastMessage =
+        editIndex == null ? "Leader Failed to Add" : "Leader Failed to Update";
+      toast.error(toastMessage);
+    }
+
     setLoading(false);
     setModalOpen(false);
   };
 
-  const handleDelete = async (idx: number) => {
+  const handleDelete = async () => {
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 400));
-    deleteLeader(idx);
-    console.log("Deleted leader at index:", idx);
+
+    const res = await deleteLeader(selectedId);
+    if (res.ok) {
+      const toastMessage = "Leader Data Deleted Successfully";
+      fetchLeadershipContent();
+      toast.success(toastMessage);
+    }
+    if (!res.ok) {
+      const toastMessage = "Leader Data Failed to Delete";
+      toast.error(toastMessage);
+    }
     setLoading(false);
     setDeleteConfirm(null);
   };
 
-  const toggleVisibility = (idx: number) =>
-    updateLeader(idx, {
-      ...siteContent.leadership[idx],
-      showOnSite: !siteContent.leadership[idx].showOnSite,
-    });
-  const changeOrder = (idx: number, dir: "up" | "down") => {
-    const l = siteContent.leadership[idx];
-    updateLeader(idx, {
-      ...l,
-      displayOrder: l.displayOrder + (dir === "up" ? -1 : 1),
-    });
-  };
+  // const toggleVisibility = (idx: number) =>
+  //   updateLeader(idx, {
+  //     ...siteContent.leadership[idx],
+  //     showOnSite: !siteContent.leadership[idx].showOnSite,
+  //   });
+  // const changeOrder = (idx: number, dir: "up" | "down") => {
+  //   const l = siteContent.leadership[idx];
+  //   updateLeader(idx, {
+  //     ...l,
+  //     displayOrder: l.displayOrder + (dir === "up" ? -1 : 1),
+  //   });
+  // };
   const setF = (k: keyof LeadershipProfile, v: unknown) => {
     setForm((p) => ({ ...p, [k]: v }));
     if (errors[k as string]) setErrors((e) => ({ ...e, [k]: "" }));
   };
+
+  useEffect(() => {
+    console.log("selectedId", selectedId);
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -168,7 +197,7 @@ export default function AdminLeadershipPage() {
                 {leader.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={leader.image}
+                    src={getBaseUrl() + leader.image}
                     alt={leader.name}
                     className="w-full h-full object-cover rounded-full"
                   />
@@ -183,13 +212,13 @@ export default function AdminLeadershipPage() {
               </div>
               <div className="flex gap-0.5">
                 <button
-                  onClick={() => changeOrder(leader._index, "up")}
+                  // onClick={() => changeOrder(leader._index, "up")}
                   className="p-1 text-white/25 hover:text-white/60 transition-colors"
                 >
                   <ChevronUp size={14} />
                 </button>
                 <button
-                  onClick={() => changeOrder(leader._index, "down")}
+                  // onClick={() => changeOrder(leader._index, "down")}
                   className="p-1 text-white/25 hover:text-white/60 transition-colors"
                 >
                   <ChevronDown size={14} />
@@ -212,14 +241,20 @@ export default function AdminLeadershipPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => openEdit(leader._index)}
+                onClick={() => {
+                  openEdit(leader._index);
+                  setSelectedId(leader.id ?? "");
+                }}
               >
                 <Pencil size={12} />
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => toggleVisibility(leader._index)}
+                // onClick={() => {
+                //   toggleVisibility(leader._index);
+                //   setSelectedId(leader.id ?? "");
+                // }}
               >
                 {leader.showOnSite ? (
                   <Eye size={12} style={{ color: "var(--g400)" }} />
@@ -230,7 +265,10 @@ export default function AdminLeadershipPage() {
               <Button
                 variant="danger"
                 size="sm"
-                onClick={() => setDeleteConfirm(leader._index)}
+                onClick={() => {
+                  setDeleteConfirm(leader._index);
+                  setSelectedId(leader.id ?? "");
+                }}
               >
                 <Trash2 size={12} />
               </Button>
@@ -345,9 +383,7 @@ export default function AdminLeadershipPage() {
             <Button
               variant="danger"
               loading={loading}
-              onClick={() =>
-                deleteConfirm !== null && handleDelete(deleteConfirm)
-              }
+              onClick={() => deleteConfirm !== null && handleDelete}
               className="flex-1"
             >
               Delete
