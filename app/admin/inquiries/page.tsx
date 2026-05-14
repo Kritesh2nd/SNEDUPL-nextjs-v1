@@ -7,25 +7,18 @@ import Modal from "@/components/ui/Modal";
 import { Trash2, Mail, MailOpen, Search } from "lucide-react";
 import { deleteInquirie, getInquirie, readInquirie } from "./action";
 import Pagination from "@/components/ui/Pagination";
-import { Inquiry, ResponseDto } from "@/types";
+import { ApiMeta, Inquiry, ResponseDto } from "@/types";
 const PER_PAGE = 10;
 
-interface ApiMeta {
-  total: number;
-  totalPages: number;
-  page: number;
-  limit: number;
-}
-
 export default function AdminInquiriesPage() {
-  const { inquiries, setInquiries } = useSite();
+  const { inquiries, setInquiries, inqueryMeta, setInqueryMeta } = useSite();
 
   const [search, setSearch] = useState("");
   const [filterRead, setFilterRead] = useState<"all" | "unread" | "read">(
     "all",
   );
   const [currentPage, setCurrentPage] = useState(1);
-  const [meta, setMeta] = useState<ApiMeta | null>(null);
+  // const [inqueryMeta, setInqueryMeta] = useState<ApiMeta | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -55,7 +48,7 @@ export default function AdminInquiriesPage() {
         const json: ResponseDto<Inquiry> = await res.json();
         // const
         setInquiries(json.data);
-        const meta: ApiMeta = {
+        const inqueryMeta: ApiMeta = {
           total: json.metadata.totalItems,
           totalPages: getTotalPages(
             json.metadata.limit ?? 0,
@@ -63,8 +56,9 @@ export default function AdminInquiriesPage() {
           ),
           page: json.metadata.page ?? 0,
           limit: json.metadata.limit ?? 0,
+          unread: json.metadata.unread,
         };
-        setMeta(meta);
+        setInqueryMeta(inqueryMeta);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Something went wrong");
       } finally {
@@ -141,7 +135,7 @@ export default function AdminInquiriesPage() {
         <div>
           <h1 className="font-display text-3xl text-white">Inquiries</h1>
           <p className="text-white/40 text-sm mt-1">
-            {meta ? meta.total : inquiries.length} total
+            {inqueryMeta ? inqueryMeta.total : inquiries.length} total
             {unreadCount > 0 && (
               <span
                 className="ml-2 px-2 py-0.5 rounded-full text-[10px] font-semibold text-black"
@@ -268,12 +262,11 @@ export default function AdminInquiriesPage() {
         )}
       </div>
       {/* Pagination */}
-      pagination code {meta?.page ?? 0}
-      {meta && meta.totalPages > 1 && (
+      {inqueryMeta && inqueryMeta.totalPages > 1 && (
         <Pagination
           currentPage={currentPage}
-          totalPages={meta.totalPages}
-          totalItems={meta.total}
+          totalPages={inqueryMeta.totalPages}
+          totalItems={inqueryMeta.total}
           perPage={PER_PAGE}
           onPageChange={handlePageChange}
           isLoading={isLoading}

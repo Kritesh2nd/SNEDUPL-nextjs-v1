@@ -17,6 +17,7 @@ import type {
   AdminProfile,
   AboutContent,
   ResponseDto,
+  ApiMeta,
 } from "@/types";
 import {
   DEFAULT_SITE_CONTENT,
@@ -45,6 +46,8 @@ interface SiteContextValue {
   deleteLeader: (i: number) => void;
   updateContact: (c: ContactInfo) => void;
   inquiries: Inquiry[];
+  inqueryMeta: ApiMeta | null;
+  setInqueryMeta: (m: ApiMeta) => void;
   addInquiry: (i: Omit<Inquiry, "createdAt" | "read">) => void;
   markInquiryRead: (i: number) => void;
   setInquiries: (i: Inquiry[]) => void;
@@ -74,6 +77,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
   const [siteContent, setSiteContentState] =
     useState<SiteContent>(DEFAULT_SITE_CONTENT);
   const [inquiries, setInquiries] = useState<Inquiry[]>(DEFAULT_INQUIRIES);
+  const [inqueryMeta, setInqueryMeta] = useState<ApiMeta | null>(null);
   const [adminProfile, setAdminProfile] = useState<AdminProfile>(
     DEFAULT_ADMIN_PROFILE,
   );
@@ -254,12 +258,30 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     } catch (err) {}
   };
 
+  const getTotalPages = (limit: number, totalItems: number): number => {
+    return Math.ceil(totalItems / limit);
+  };
+
   const fetchInquiries = async () => {
     try {
       const res = await getInquirie("page=1&limit=10");
       if (res.ok) {
         const inquiryData: ResponseDto<Inquiry> = await res.json();
+
+        console.log("inquiryData", inquiryData);
+
         setInquiries(inquiryData.data);
+        const inqueryMeta: ApiMeta = {
+          total: inquiryData.metadata.totalItems,
+          totalPages: getTotalPages(
+            inquiryData.metadata.limit ?? 0,
+            inquiryData.metadata.totalItems,
+          ),
+          page: inquiryData.metadata.page ?? 0,
+          limit: inquiryData.metadata.limit ?? 0,
+          unread: inquiryData.metadata.unread,
+        };
+        setInqueryMeta(inqueryMeta);
       }
     } catch (err) {}
   };
@@ -309,6 +331,8 @@ export function SiteProvider({ children }: { children: ReactNode }) {
         fetchLeadershipContent,
         fetchContactInfoContent,
         fetchInquiries,
+        inqueryMeta,
+        setInqueryMeta,
       }}
     >
       {children}

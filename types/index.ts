@@ -126,3 +126,11 @@ export interface ResponseDto<T> {
   data: T[];
   metadata: MetaDataResponse;
 }
+
+export interface ApiMeta {
+  total: number;
+  totalPages: number;
+  page: number;
+  limit: number;
+  unread?: number;
+}

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { useSite } from "@/context/SiteContext";
 import {
@@ -14,8 +14,8 @@ import {
 } from "lucide-react";
 
 export default function AdminDashboardPage() {
-  const { siteContent, inquiries, adminProfile } = useSite();
-  const unread = inquiries.filter((q) => !q.read).length;
+  const { siteContent, inquiries, inqueryMeta, adminProfile } = useSite();
+  const unread = inqueryMeta?.unread ?? 0;
   const featured = siteContent.products.filter((p) => p.featured).length;
 
   const stats = [
@@ -39,7 +39,7 @@ export default function AdminDashboardPage() {
     },
     {
       label: "Total Inquiries",
-      value: inquiries.length,
+      value: inqueryMeta?.total ?? 0,
       icon: MessageSquare,
       href: "/admin/inquiries",
       color: "var(--g300)",
@@ -83,6 +83,10 @@ export default function AdminDashboardPage() {
       icon: Phone,
     },
   ];
+
+  useEffect(() => {
+    console.log("inqueryMetainqueryMeta", inqueryMeta);
+  }, [inqueryMeta]);
 
   return (
     <div className="space-y-8">
