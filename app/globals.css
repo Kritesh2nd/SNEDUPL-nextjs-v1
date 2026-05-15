@@ -413,3 +413,51 @@ body {
     ),
     var(--dark);
 }
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  padding: 9px 20px;
+  border-radius: 2px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-danger:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.6);
+}
+.page-enter {
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #e2e8f0;
+  padding: 13px 35px;
+  border-radius: 2px;
+  border: 1px solid rgba(14, 165, 233, 0.5);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-outline:hover {
+  background: rgba(14, 165, 233, 0.1);
+  border-color: rgba(14, 165, 233, 0.8);
+  color: #0ea5e9;
+}

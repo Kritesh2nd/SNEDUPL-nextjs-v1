@@ -122,7 +122,7 @@ export default function ContactSection() {
               <div className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <Input
-                    label="Full Name"
+                    label="Full Names"
                     placeholder="Your name"
                     value={form.name}
                     onChange={setF("name")}

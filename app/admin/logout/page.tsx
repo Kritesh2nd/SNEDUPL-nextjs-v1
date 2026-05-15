@@ -16,12 +16,18 @@ export default function LogoutPage() {
     // setLoggedIn(false);
     // setAccessToken("");
     removeLocalStorage("token");
-    router.push("/login");
+    // router.push("/login");
   };
 
   return (
     <div className="page-enter flex items-center justify-center min-h-[60vh]">
-      <div className="glass-card rounded-sm p-12 max-w-md w-full text-center border border-red-500/10">
+      <div
+        className="glass-card rounded-sm p-12 max-w-md w-full text-center border border-red-500/10"
+        style={{
+          background: "#0a1a0d",
+          border: "1px solid rgba(74,222,128,0.1)",
+        }}
+      >
         {/* Icon */}
         <div className="w-20 h-20 rounded-sm bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-6">
           <LogOut size={32} className="text-red-400" />
@@ -39,7 +45,7 @@ export default function LogoutPage() {
 
         <div className="flex flex-col gap-3">
           <button
-            className="btn-danger justify-center w-full py-3"
+            className="btn-danger justify-center w-full py-3 border "
             onClick={handleLogout}
             disabled={loading}
           >
@@ -57,7 +63,7 @@ export default function LogoutPage() {
           </button>
 
           <Link href="/dashboard">
-            <button className="btn-outline w-full justify-center py-3">
+            <button className="btn-outline w-full justify-center py-3 border">
               <ArrowLeft size={14} />
               <span>Return to Dashboard</span>
             </button>

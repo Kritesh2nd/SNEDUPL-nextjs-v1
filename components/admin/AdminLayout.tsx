@@ -118,6 +118,13 @@ function SidebarContent({
           <Home size={14} />
           {!slim && <span className="text-xs">Back to Site</span>}
         </Link>
+        <Link
+          href="/admin/logout"
+          className="flex items-center gap-3 px-3 py-2 rounded-lg text-white/25 hover:text-white/55 transition-colors"
+        >
+          <LogOut size={14} />
+          {!slim && <span className="text-xs">Log Out</span>}
+        </Link>
       </div>
     </div>
   );

@@ -49,7 +49,7 @@ export default function ProductsSection() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <SectionTitle
-            eyebrow="Our Portfolio"
+            eyebrow="Featured Products"
             title="Spirits Crafted to Perfection"
             subtitle="From pristine soju to aged whiskies — every bottle carries the soul of the Himalayas."
           />
@@ -61,7 +61,7 @@ export default function ProductsSection() {
         </div>
 
         {/* Filter tabs */}
-        <div className="flex flex-wrap gap-2 mb-10">
+        <div className="flex flex-wrap gap-2 mb-10 hidden">
           {FILTERS.map((f) => (
             <button
               key={f.value}
@@ -86,7 +86,7 @@ export default function ProductsSection() {
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {filtered.map((product, i) => (
+          {featured.map((product, i) => (
             <div
               key={`${product.name}-${i}`}
               className="fade-up"
@@ -102,10 +102,10 @@ export default function ProductsSection() {
             </div>
           ))}
         </div>
-        {filtered.length === 0 && (
+        {featured.length === 0 && (
           <div className="text-center py-20 text-white/25">
             <p className="text-sm tracking-wider uppercase">
-              No products in this category
+              No featured products
             </p>
           </div>
         )}
