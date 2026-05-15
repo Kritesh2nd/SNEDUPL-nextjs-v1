@@ -63,7 +63,6 @@ export default function AdminLeadershipPage() {
     setEditIndex(idx);
     setErrors({});
     setModalOpen(true);
-    console.log("idx", idx);
   };
 
   const validate = () => {
@@ -119,26 +118,10 @@ export default function AdminLeadershipPage() {
     setDeleteConfirm(null);
   };
 
-  // const toggleVisibility = (idx: number) =>
-  //   updateLeader(idx, {
-  //     ...siteContent.leadership[idx],
-  //     showOnSite: !siteContent.leadership[idx].showOnSite,
-  //   });
-  // const changeOrder = (idx: number, dir: "up" | "down") => {
-  //   const l = siteContent.leadership[idx];
-  //   updateLeader(idx, {
-  //     ...l,
-  //     displayOrder: l.displayOrder + (dir === "up" ? -1 : 1),
-  //   });
-  // };
   const setF = (k: keyof LeadershipProfile, v: unknown) => {
     setForm((p) => ({ ...p, [k]: v }));
     if (errors[k as string]) setErrors((e) => ({ ...e, [k]: "" }));
   };
-
-  useEffect(() => {
-    console.log("selectedId", selectedId);
-  }, []);
 
   return (
     <div className="space-y-6">
@@ -210,20 +193,6 @@ export default function AdminLeadershipPage() {
                   </span>
                 )}
               </div>
-              <div className="flex gap-0.5">
-                <button
-                  // onClick={() => changeOrder(leader._index, "up")}
-                  className="p-1 text-white/25 hover:text-white/60 transition-colors"
-                >
-                  <ChevronUp size={14} />
-                </button>
-                <button
-                  // onClick={() => changeOrder(leader._index, "down")}
-                  className="p-1 text-white/25 hover:text-white/60 transition-colors"
-                >
-                  <ChevronDown size={14} />
-                </button>
-              </div>
             </div>
             <div>
               <p className="text-sm text-white font-medium">{leader.name}</p>
@@ -248,20 +217,7 @@ export default function AdminLeadershipPage() {
               >
                 <Pencil size={12} />
               </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                // onClick={() => {
-                //   toggleVisibility(leader._index);
-                //   setSelectedId(leader.id ?? "");
-                // }}
-              >
-                {leader.showOnSite ? (
-                  <Eye size={12} style={{ color: "var(--g400)" }} />
-                ) : (
-                  <EyeOff size={12} />
-                )}
-              </Button>
+
               <Button
                 variant="danger"
                 size="sm"
@@ -383,10 +339,10 @@ export default function AdminLeadershipPage() {
             <Button
               variant="danger"
               loading={loading}
-              onClick={() => deleteConfirm !== null && handleDelete}
+              onClick={handleDelete}
               className="flex-1"
             >
-              Delete
+              Deletex
             </Button>
             <Button
               variant="ghost"

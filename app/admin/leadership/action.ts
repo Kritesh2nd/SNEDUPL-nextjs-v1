@@ -58,6 +58,7 @@ export async function patchLeader(
 
 // LEADERSHIP - delete
 export async function deleteLeader(id: string) {
+  console.log("delete rey leaders, ", id);
   const res = await fetch(getBaseUrl() + CURRENT_URL + "/" + id, {
     method: "DELETE",
     headers: {

@@ -10,8 +10,6 @@ export const getAdminData = (): AdminLogin => {
     password,
   };
 
-  console.log("admin login", adminData);
-
   return adminData;
 };
 
