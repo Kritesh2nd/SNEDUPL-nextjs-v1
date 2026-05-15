@@ -200,7 +200,7 @@ export default function ContactSection() {
                   border: "1px solid rgba(96,165,250,0.2)",
                 }}
               >
-                <Building2 size={16} style={{ color: "var(--b400)" }} />
+                <Building2 size={16} style={{ color: "var(--g400)" }} />
               </div>
               <div>
                 <p className="text-[10px] text-white/35 uppercase tracking-wider mb-1">

@@ -59,7 +59,7 @@ export default function DistillerySection() {
             <SectionTitle
               eyebrow="Our Facility"
               title={"Where Precision\nMeets Passion"}
-              accentColor="blue"
+              accentColor="green"
               subtitle="Established in 2018, our world-class distillery campus spans 85 Kattha in Kohalpur, Banke — a monument to Nepali craftsmanship and modern distillation science."
             />
 

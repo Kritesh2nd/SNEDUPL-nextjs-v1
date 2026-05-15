@@ -35,13 +35,17 @@ export default function TimelineSection() {
             {events.map((evt, i) => {
               const isLeft = i % 2 === 0;
               const isFuture = evt.year >= 2026;
-              const dotColor = isFuture ? "var(--b400)" : "var(--g400)";
-              const borderColor = isFuture
-                ? "rgba(96,165,250,0.2)"
-                : "rgba(74,222,128,0.15)";
-              const bg = isFuture
-                ? "rgba(37,99,235,0.06)"
-                : "rgba(22,163,74,0.06)";
+              // const dotColor = isFuture ? "var(--b400)" : "var(--g400)";
+              // const borderColor = isFuture
+              //   ? "rgba(96,165,250,0.2)"
+              //   : "rgba(74,222,128,0.15)";
+              // const bg = isFuture
+              //   ? "rgba(37,99,235,0.06)"
+              //   : "rgba(22,163,74,0.06)";
+
+              const dotColor = "var(--g400)";
+              const borderColor = "rgba(74,222,128,0.15)";
+              const bg = "rgba(22,163,74,0.06)";
 
               return (
                 <div

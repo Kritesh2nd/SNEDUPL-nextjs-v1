@@ -49,11 +49,11 @@ export default function InvestorsSection() {
           <SectionTitle
             eyebrow="Investor Relations"
             title="The Next Chapter"
-            accentColor="blue"
+            accentColor="green"
             subtitle="Entering our most ambitious growth phase — international expansion and IPO readiness."
           />
           <Link href="/investors" className="flex-shrink-0">
-            <Button variant="outline-blue" size="sm">
+            <Button variant="outline" size="sm">
               Learn More <ArrowRight size={13} />
             </Button>
           </Link>
@@ -63,11 +63,11 @@ export default function InvestorsSection() {
           {METRICS.map((m) => (
             <div
               key={m.label}
-              className="glass-blue rounded-xl p-5 hover-lift text-center"
+              className="glass-green rounded-xl p-5 hover-lift text-center"
             >
               <p
                 className="font-display text-4xl mb-1"
-                style={{ color: "var(--b300)" }}
+                style={{ color: "var(--g300)" }}
               >
                 {m.value}
               </p>
@@ -92,10 +92,10 @@ export default function InvestorsSection() {
                   border: "1px solid rgba(96,165,250,0.2)",
                 }}
               >
-                <Icon size={18} style={{ color: "var(--b400)" }} />
+                <Icon size={18} style={{ color: "var(--g400)" }} />
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-white mb-1 group-hover:text-[var(--b300)] transition-colors">
+                <h4 className="text-sm font-semibold text-white mb-1 group-hover:text-[var(--g300)] transition-colors">
                   {title}
                 </h4>
                 <p className="text-xs text-white/45 leading-relaxed">{desc}</p>

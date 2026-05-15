@@ -82,18 +82,18 @@ export default function InvestorsPage() {
             "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(37,99,235,0.12) 0%, transparent 60%), var(--dark)",
         }}
       >
-        <div className="absolute inset-0 dot-grid-blue opacity-30 pointer-events-none" />
+        <div className="absolute inset-0 dot-grid-green opacity-30 pointer-events-none" />
         <div className="max-w-4xl mx-auto px-6 text-center">
           <span
             className="text-[11px] font-semibold tracking-[0.28em] uppercase"
-            style={{ color: "var(--b400)" }}
+            style={{ color: "var(--g400)" }}
           >
             Investor Relations
           </span>
           <h1 className="font-display text-5xl md:text-6xl xl:text-7xl text-white mt-4 mb-6">
             The Next
             <br />
-            <span className="text-electric-blue">Chapter</span>
+            <span className="text-electric-green">Chapter</span>
           </h1>
           <p className="text-white/45 text-base max-w-2xl mx-auto leading-relaxed">
             Shree New Everest Distillery Udhyog is entering its most ambitious
@@ -113,13 +113,13 @@ export default function InvestorsPage() {
             eyebrow="Why Invest"
             title="Investment Highlights"
             centered
-            accentColor="blue"
+            accentColor="green"
           />
           <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {INVESTMENT_HIGHLIGHTS.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                className="glass-blue rounded-xl p-6 hover-lift group"
+                className="glass-green rounded-xl p-6 hover-lift group"
                 style={{ border: "1px solid rgba(96,165,250,0.1)" }}
               >
                 <div
@@ -129,9 +129,9 @@ export default function InvestorsPage() {
                     border: "1px solid rgba(96,165,250,0.2)",
                   }}
                 >
-                  <Icon size={20} style={{ color: "var(--b400)" }} />
+                  <Icon size={20} style={{ color: "var(--g400)" }} />
                 </div>
-                <h4 className="font-display text-xl text-white mb-2 group-hover:text-[var(--b300)] transition-colors">
+                <h4 className="font-display text-xl text-white mb-2 group-hover:text-[var(--g300)] transition-colors">
                   {title}
                 </h4>
                 <p className="text-xs text-white/45 leading-relaxed">{desc}</p>
@@ -148,7 +148,7 @@ export default function InvestorsPage() {
             eyebrow="IPO Roadmap"
             title="Path to Public Listing"
             centered
-            accentColor="blue"
+            accentColor="green"
           />
           <div className="mt-12 relative">
             <div
@@ -170,18 +170,18 @@ export default function InvestorsPage() {
                   >
                     <span
                       className="text-[9px] font-bold text-center leading-tight"
-                      style={{ color: "var(--b400)" }}
+                      style={{ color: "var(--g400)" }}
                     >
                       {item.year}
                     </span>
                   </div>
                   <div
-                    className="flex-1 glass-blue rounded-xl p-5 hover-lift"
+                    className="flex-1 glass-green rounded-xl p-5 hover-lift"
                     style={{ border: "1px solid rgba(96,165,250,0.12)" }}
                   >
                     <span
                       className="text-[11px] font-bold tracking-widest uppercase sm:hidden"
-                      style={{ color: "var(--b400)" }}
+                      style={{ color: "var(--g400)" }}
                     >
                       {item.year} ·{" "}
                     </span>

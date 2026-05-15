@@ -5,7 +5,6 @@ import TimelineSection from "@/components/sections/TimelineSection";
 import DistillerySection from "@/components/sections/DistillerySection";
 import LeadershipSection from "@/components/sections/LeadershipSection";
 import InvestorsSection from "@/components/sections/InvestorsSection";
-import ContactSection from "@/components/sections/ContactSection";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { ArrowRight } from "lucide-react";
 import Button from "@/components/ui/Button";
@@ -22,7 +21,6 @@ export default function HomePage() {
         <DistillerySection />
         <LeadershipSection />
         <InvestorsSection />
-        {/* <ContactSection /> */}
         <section
           id="contact"
           className="relative py-24 md:py-32"

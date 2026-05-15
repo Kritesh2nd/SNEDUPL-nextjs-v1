@@ -61,7 +61,7 @@ export default function Footer() {
                 <MapPin
                   size={11}
                   className="mt-0.5 flex-shrink-0"
-                  style={{ color: "var(--b400)" }}
+                  style={{ color: "var(--g400)" }}
                 />
                 <p className="text-[11px] text-white/35">
                   {contactInfo.officeAddress}

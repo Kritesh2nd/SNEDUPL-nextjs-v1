@@ -46,14 +46,14 @@ export default function DistilleryPage() {
         <div className="max-w-4xl mx-auto px-6 text-center">
           <span
             className="text-[11px] font-semibold tracking-[0.28em] uppercase"
-            style={{ color: "var(--b400)" }}
+            style={{ color: "var(--g400)" }}
           >
             Our Facility
           </span>
           <h1 className="font-display text-5xl md:text-6xl xl:text-7xl text-white mt-4 mb-6">
             Where Precision
             <br />
-            <span className="text-electric-blue">Meets Passion</span>
+            <span className="text-electric-green">Meets Passion</span>
           </h1>
           <p className="text-white/45 text-base max-w-2xl mx-auto leading-relaxed">
             Established in 2018, our {d.area} state-of-the-art distillery in{" "}
@@ -72,7 +72,7 @@ export default function DistilleryPage() {
             eyebrow="How We Craft"
             title="The Production Process"
             centered
-            accentColor="blue"
+            accentColor="green"
           />
           <div className="mt-14 space-y-0">
             {PROCESS_STEPS.map((step, i) => (

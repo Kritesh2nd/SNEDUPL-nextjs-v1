@@ -9,8 +9,8 @@ import { ArrowRight, CheckCircle } from "lucide-react";
 const STATS = [
   { value: "15+", label: "Years of Excellence", color: "var(--g400)" },
   { value: "30+", label: "Products Launched", color: "var(--g500)" },
-  { value: "50+", label: "Dealers Nationwide", color: "var(--b400)" },
-  { value: "85", label: "Kattha Facility", color: "var(--b300)" },
+  { value: "50+", label: "Dealers Nationwide", color: "var(--g400)" },
+  { value: "85", label: "Kattha Facility", color: "var(--g500)" },
 ];
 
 const QUALITY_SIGNALS = [
