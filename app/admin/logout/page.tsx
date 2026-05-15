@@ -2,21 +2,17 @@
 import { useState } from "react";
 import { LogOut, ArrowLeft, RefreshCw } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { removeLocalStorage } from "@/lib/utils";
 
 export default function LogoutPage() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const handleLogout = async () => {
     setLoading(true);
     await new Promise((r) => setTimeout(r, 500));
     setLoading(false);
-    // setLoggedIn(false);
-    // setAccessToken("");
     removeLocalStorage("token");
-    // router.push("/login");
+    window.location.reload();
   };
 
   return (
@@ -62,7 +58,7 @@ export default function LogoutPage() {
             )}
           </button>
 
-          <Link href="/dashboard">
+          <Link href="/admin">
             <button className="btn-outline w-full justify-center py-3 border">
               <ArrowLeft size={14} />
               <span>Return to Dashboard</span>
@@ -71,7 +67,7 @@ export default function LogoutPage() {
         </div>
 
         <p className="font-body text-xs text-slate-600 mt-6">
-          AURA Admin Panel · Secure Session
+          Everest Admin Panel · Secure Session
         </p>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { useSite } from "@/context/SiteContext";
 import Button from "@/components/ui/Button";
 import { ArrowRight, ChevronDown, Zap, Award, Globe } from "lucide-react";
 import { COMPANY_SHORT } from "@/lib/constants";
+import SojuBottleViewer from "../ui/SojuBottleViewer";
 
 const TRUST_BADGES = [
   { icon: Award, label: "15 Years Excellence" },
@@ -124,7 +125,7 @@ export default function HeroSection() {
 
         {/* ── Right column – Bottle showcase ── */}
         <div
-          className={`flex justify-center items-center transition-all duration-1000 delay-300 ${mounted ? "opacity-100" : "opacity-0"}`}
+          className={`flex justify-center items-center transition-all duration-1000 delay-300 ${mounted ? "opacity-100" : "opacity-0"} hidden`}
         >
           <div className="relative">
             {/* Radial glow behind bottle */}
@@ -244,6 +245,8 @@ export default function HeroSection() {
             </div>
           </div>
         </div>
+
+        <SojuBottleViewer />
       </div>
 
       {/* Scroll cue */}

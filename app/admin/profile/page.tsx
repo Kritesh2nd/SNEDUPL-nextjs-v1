@@ -48,7 +48,7 @@ export default function AdminProfilePage() {
               className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center"
               style={{
                 background:
-                  "linear-gradient(135deg, rgba(22,163,74,0.3), rgba(37,99,235,0.3))",
+                  "linear-gradient(135deg, rgba(22,163,74,1), rgba(37,99,235,1))",
                 border: "3px solid #0a1a0d",
                 boxShadow: "0 0 0 1px rgba(74,222,128,0.25)",
               }}
