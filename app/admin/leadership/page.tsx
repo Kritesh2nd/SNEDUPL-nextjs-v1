@@ -180,7 +180,7 @@ export default function AdminLeadershipPage() {
                 {leader.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={getBaseUrl() + leader.image}
+                    src={leader.image}
                     alt={leader.name}
                     className="w-full h-full object-cover rounded-full"
                   />

@@ -130,7 +130,7 @@ export default function ProductsSection() {
             {selected.image && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={getBaseUrl() + selected.image}
+                src={selected.image}
                 alt={selected.name}
                 className="w-full h-48 object-cover rounded-lg"
               />

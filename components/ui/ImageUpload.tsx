@@ -88,7 +88,7 @@ export default function ImageUpload({
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={!imageUpload ? getBaseUrl() + value : value}
+            src={value}
             alt="Preview"
             className={`w-full h-full object-cover ${circular ? "rounded-full" : "rounded-lg"} border border-white/10`}
           />

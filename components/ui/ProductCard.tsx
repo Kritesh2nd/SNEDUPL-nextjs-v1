@@ -38,7 +38,7 @@ export default function ProductCard({ product, onClick }: Props) {
         {product.image ? (
           <Image
             unoptimized
-            src={`${getBaseUrl()}${product.image}`}
+            src={`${product.image}`}
             fill
             className="object-cover rounded-full"
             alt={product.name}

@@ -189,10 +189,11 @@ export default function ProductsPage() {
               {PRODUCT_CATEGORY_LABELS[selected.category]}
             </p>
             <p className="text-white/50 text-sm italic">{selected.tagline}</p>
+
             {selected.image && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={getBaseUrl() + selected.image}
+                src={selected.image}
                 alt={selected.name}
                 className="w-full h-48 object-cover rounded-lg"
               />

@@ -254,7 +254,7 @@ export default function AdminProductsPage() {
                       {product.image ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
-                          src={getBaseUrl() + product.image}
+                          src={product.image}
                           alt={product.name}
                           className="w-full h-full object-cover"
                         />
