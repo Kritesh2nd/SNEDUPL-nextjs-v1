@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
-import { getBaseUrl } from "./lib/utils";
 
-const apiUrl = new URL(getBaseUrl());
+const apiUrl = new URL(
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000",
+);
 console.log({
   protocol: apiUrl.protocol.replace(":", "") as "http" | "https",
   hostname: apiUrl.hostname,

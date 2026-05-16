@@ -1,7 +1,7 @@
 import { getBaseUrl } from "@/lib/utils";
-import { LoginDto } from "../../../../backend/distillery-api/src/auth/dto/login.dto";
+import { LoginResponseDto } from "@/types";
 
-export async function loginUser(data: LoginDto) {
+export async function loginUser(data: LoginResponseDto) {
   const res = await fetch(getBaseUrl() + "/auth/login", {
     method: "POST",
     headers: {
@@ -12,5 +12,3 @@ export async function loginUser(data: LoginDto) {
 
   return res;
 }
-
-// export async function loginUser(data: LoginDto) {}
