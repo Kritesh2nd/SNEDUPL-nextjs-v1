@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Leaf } from "lucide-react";
 import { NAV_LINKS, COMPANY_SHORT } from "@/lib/constants";
+import Image from "next/image";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -30,14 +31,15 @@ export default function Navbar() {
       <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div
-            className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 group-hover:glow-green"
-            style={{
-              background: "rgba(22,163,74,0.1)",
-              border: "1px solid rgba(74,222,128,0.35)",
-            }}
-          >
-            <Leaf size={15} style={{ color: "var(--g400)" }} />
+          <div className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 group-hover:glow-green">
+            <Image
+              src={
+                "https://res.cloudinary.com/dubcrf0yc/image/upload/v1778952059/logo_pwwg7r.png"
+              }
+              height={40}
+              width={40}
+              alt="logo"
+            />
           </div>
           <div className="hidden sm:block">
             <p className="font-display text-lg text-white leading-none">

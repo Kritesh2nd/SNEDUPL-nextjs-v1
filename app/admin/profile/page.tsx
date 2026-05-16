@@ -57,7 +57,9 @@ export default function AdminProfilePage() {
                 <div className="relative w-20 h-20">
                   <Image
                     unoptimized
-                    src={"/public/images/leadership/admin-profile.png"}
+                    src={
+                      "https://res.cloudinary.com/dubcrf0yc/image/upload/v1778952269/admin-profile_ptf5nz.png"
+                    }
                     fill
                     className="object-cover rounded-full"
                     alt={adminProfile.name}
