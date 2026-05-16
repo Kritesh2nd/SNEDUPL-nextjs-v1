@@ -57,7 +57,7 @@ export default function AdminProfilePage() {
                 <div className="relative w-20 h-20">
                   <Image
                     unoptimized
-                    src={`${getBaseUrl()}${adminProfile.avatarUrl}`}
+                    src={"/public/images/leadership/admin-profile.png"}
                     fill
                     className="object-cover rounded-full"
                     alt={adminProfile.name}
