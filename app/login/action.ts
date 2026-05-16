@@ -1,7 +1,7 @@
 import { getBaseUrl } from "@/lib/utils";
-import { LoginResponseDto } from "@/types";
+import { AdminLogin } from "@/types";
 
-export async function loginUser(data: LoginResponseDto) {
+export async function loginUser(data: AdminLogin) {
   const res = await fetch(getBaseUrl() + "/auth/login", {
     method: "POST",
     headers: {

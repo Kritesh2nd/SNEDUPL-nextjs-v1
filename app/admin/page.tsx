@@ -217,7 +217,7 @@ export default function AdminDashboardPage() {
                   </p>
                 </div>
                 <p className="text-xs text-white/20 flex-shrink-0 hidden sm:block">
-                  {new Date(inq.createdAt).toLocaleDateString()}
+                  {new Date(inq.createdAt ?? "").toLocaleDateString()}
                 </p>
               </div>
             </Link>
